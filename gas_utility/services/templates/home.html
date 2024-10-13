@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">  
+        <title>Home</title>  
+        <link rel="stylesheet" href="styles.css">  
+        <style>
+            body {  
+            font-family: Arial, sans-serif;
+            min-height: 100vh; 
+            position: relative;  
+            margin: 0;  
+            padding: 0;  
+            }  
+            
+            nav {  
+            background-color: #333;  
+            color: #fff;  
+            padding: 1em;  
+            text-align: center;  
+            }  
+            
+            nav ul {  
+            list-style: none;  
+            margin: 0;  
+            padding: 0;  
+            }  
+            
+            nav li {  
+            display: inline-block;  
+            margin-right: 20px;  
+            }  
+            
+            nav a {  
+            color: #fff;  
+            text-decoration: none;  
+            }  
+            
+            .container {  
+            max-width: 800px;  
+            margin: 40px auto;  
+            padding: 20px;  
+            background-color: #f9f9f9;  
+            border: 1px solid #ddd;  
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+            }  
+            
+            .button-container {  
+            display: flex;  
+            justify-content: space-between;  
+            margin-top: 20px;  
+            }  
+            
+            button {  
+            background-color: #4CAF50;  
+            color: #fff;  
+            padding: 10px 20px;  
+            border: none;  
+            border-radius: 5px;  
+            cursor: pointer;  
+            }  
+            
+            button:hover {  
+            background-color: #3e8e41;  
+            }  
+            
+            footer {  
+            background-color: #333;  
+            color: #fff;  
+            padding: 1em; 
+            position: absolute;  
+            bottom: 0;  
+            width: 100%;   
+            text-align: center;  
+            clear: both;  
+            }
+
+        </style>
+      </head>
+
+      
+
+      <body>  
+        <nav>  
+          <ul>  
+            {% if request.session.customer_id %}
+            <li><a href="/services/logout">Logout</a></li>  
+            {% else %}
+
+          <li><a href="/services/login">Login</a></li>  
+          <li><a href="/services/create_customer">Register</a></li> 
+           {% endif %} 
+          <li><a href="/services/">Home</a></li>
+            
+       </ul>  
+        </nav>  
+        <div class="container">  
+          <h1>Welcome to our website!</h1>  
+          <div class="button-container">  
+            <a href="/services/create_service_request"><button>Raise an Request</button> </a> 
+          <a href="/services/admin_request_center"><button>All Customer's Request</button> </a>  
+          <a href="/services/all_requests"><button>Your Past Requests</button> </a> 
+          <a href="/services/profile/{{request.session.customer_id}}/"><button>Profile</button> </a>
+           </div>  
+        </div>  
+        <footer>  
+          <p>&copy; Bynry Inc (Gas Utility)</p>  
+         </footer>  
+      </body>
+</html>

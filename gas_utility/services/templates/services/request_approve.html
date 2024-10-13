@@ -1,0 +1,143 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+  <title>Service Request Success</title>  
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        position: relative;
+        }
+
+        nav {
+        background-color: #333;
+        color: #fff;
+        padding: 1em;
+        text-align: center;
+        }
+
+        nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        }
+
+        nav li {
+        display: inline-block;
+        margin-right: 20px;
+        }
+
+        nav a {
+        color: #fff;
+        text-decoration: none;
+        }
+
+        .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        }
+
+        li {
+        margin-bottom: 20px;
+        }
+
+        strong {
+        font-weight: bold;
+        }
+
+        button[type="submit"] {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+        background-color: #3e8e41;
+        }
+
+        footer {
+        background-color: #333;
+        color: #fff;
+        padding: 1em;
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        }
+
+
+  </style>
+</head>  
+<body>  
+  <nav>  
+    <ul>  
+      {% if request.session.customer_id %}
+      <li><a href="/services/logout">Logout</a></li>  
+      {% else %}
+
+    <li><a href="/services/login">Login</a></li>  
+    <li><a href="/services/create_customer">Register</a></li> 
+     {% endif %} 
+    <li><a href="/services/">Home</a></li>
+      
+ </ul>  
+  </nav>  
+  <div class="container">  
+   <h1>Service request created successfully!</h1>  
+   <h2>Your Service Requests</h2>  
+   {% if service_requests %}  
+    <p>Customer ID: {{ request.session.customer_id }}</p>  
+    
+       {% for se_request in service_requests %}  
+        <li>  
+          <strong>Request Type:</strong> {{ se_request.get_request_type_display }} <br>  
+          <strong>Request Type:</strong> {{ se_request }} <br>  
+          <strong>Description:</strong> {{ se_request.description }} <br>  
+          <strong>Status:</strong> {{ se_request.status }} <br>  
+          <strong>Submitted on:</strong> {{ se_request.created_at|date:"Y-m-d H:i" }} <br>  
+          {% if se_request.resolved_at %}  
+           <strong>Resolved on:</strong> {{ se_request.resolved_at|date:"Y-m-d H:i" }} <br>  
+          {% endif %}  
+          {% if se_request.status == 'Pending'%}  
+           <form method="post" action="{% url 'complete_service_request' se_request.id %}">  
+            {% csrf_token %}  
+            <button type="submit">Complete</button>  
+           </form> 
+        </br></br> 
+          {% endif %}  
+          <!-- Track Request Button -->  
+          <form method="get" action="{% url 'track_service_request' se_request.id %}">  
+           <button type="submit">Track Request</button>  
+          </form>  
+        </li>  
+        <hr>  
+       {% endfor %}  
+    </ul>  
+   {% else %}  
+    <p>You have no service requests at the moment.</p>  
+   {% endif %}  
+   <br>  
+   <a href="/services/create_service_request/">Create another request</a>  
+</br></br> 
+   <a href="/services/"><button>Home</button></a>
+  </div>  
+  <footer>  
+    <p>&copy; Bynry Inc (Gas Utility)</p>  
+   </footer>  
+</body>  
+</html>
